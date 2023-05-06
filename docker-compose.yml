@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  item-app:
+    # Konfigurasi service item-app
+    image: docker.pkg.github.com/zaelani23/a433-microservices/item-app:v1 # Image untuk item-app diambil dari GitHub Packages
+    restart: always # Restart policy agar container selalu restart ketika terhenti
+    ports:
+      - "80:8080" # Port mapping agar item-app dapat diakses dari port 80 di host
+    depends_on:
+      - item-db # Pastikan item-app hanya berjalan setelah item-db diluncurkan
+
+  item-db:
+    # Konfigurasi service item-db
+    image: mongo:3 # Image untuk item-db diambil dari Docker Hub
+    restart: always # Restart policy agar container selalu restart ketika terhenti
+    volumes:
+      - app-db:/data/db # Memakai volume bernama app-db dengan target /data/db di container
+
+volumes:
+  app-db: # Satu buah volume bernama app-db untuk service item-db
