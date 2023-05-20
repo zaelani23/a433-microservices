@@ -1,24 +1,24 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mongo-pv
+  name: mongo-pv  # Nama PersistentVolume yang akan digunakan
   labels:
-    type: local
+    type: local  # Label untuk PersistentVolume
 spec:
   capacity:
-    storage: 20Gi
+    storage: 20Gi  # Kapasitas penyimpanan PersistentVolume
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOnce  # Mode akses PersistentVolume
   hostPath:
-    path: "/mnt/data"
+    path: "/mnt/data"  # Path pada host yang akan digunakan oleh PersistentVolume
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
- name: mongo-pvc
+  name: mongo-pvc  # Nama PersistentVolumeClaim yang akan digunakan
 spec:
- accessModes:
-   - ReadWriteOnce
- resources:
-   requests:
-     storage: 20Gi
+  accessModes:
+    - ReadWriteOnce  # Mode akses PersistentVolumeClaim
+  resources:
+    requests:
+      storage: 20Gi  # Permintaan kapasitas penyimpanan untuk PersistentVolumeClaim

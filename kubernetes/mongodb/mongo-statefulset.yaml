@@ -1,49 +1,49 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongodb
+  name: mongodb  # Nama StatefulSet yang akan digunakan
 spec:
-  serviceName: mongo-service
-  replicas: 1
+  serviceName: mongo-service  # Nama Service yang akan digunakan oleh StatefulSet
+  replicas: 1  # Jumlah replika yang akan dibuat untuk StatefulSet ini
   selector:
     matchLabels:
-      app: database
+      app: database  # Selector untuk memilih Pod yang memiliki label "app: database"
   template:
     metadata:
       labels:
-        app: database
+        app: database  # Label yang akan diberikan pada Pod yang dibuat
         selector: mongodb
     spec:
       containers:
-      - name: mongodb
-        image: mongo:4.4.3
+      - name: mongodb  # Nama container
+        image: mongo:4.4.3  # Image Docker yang akan digunakan untuk container ini
         ports:
-        - containerPort: 27017
+        - containerPort: 27017  # Port yang akan diexpose oleh container
         env:
-          - name: MONGO_INITDB_ROOT_USERNAME_FILE
-            value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
-          - name: MONGO_INITDB_ROOT_PASSWORD_FILE
-            value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+          - name: MONGO_INITDB_ROOT_USERNAME_FILE  # Variable environment untuk menentukan file yang berisi username root MongoDB
+            value: /etc/mongo-credentials/MONGO_ROOT_USERNAME  # Nilai dari variable environment MONGO_INITDB_ROOT_USERNAME_FILE
+          - name: MONGO_INITDB_ROOT_PASSWORD_FILE  # Variable environment untuk menentukan file yang berisi password root MongoDB
+            value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD  # Nilai dari variable environment MONGO_INITDB_ROOT_PASSWORD_FILE
         volumeMounts:
-        - name: mongo-data
+        - name: mongo-data  # Mount volume "mongo-data" ke path "/data/db"
           mountPath: /data/db
-        - name: mongo-config
+        - name: mongo-config  # Mount ConfigMap "mongo-config" ke path "/config" dalam mode baca saja
           mountPath: /config
           readOnly: true
-        - name: mongo-credentials
+        - name: mongo-credentials  # Mount Secret "mongo-credentials" ke path "/etc/mongo-credentials" dalam mode baca saja
           mountPath: /etc/mongo-credentials
           readOnly: true
       volumes:
-      - name: mongo-data
+      - name: mongo-data  # Volume yang menggunakan PersistentVolumeClaim "mongo-pvc"
         persistentVolumeClaim:
           claimName: mongo-pvc
-      - name: mongo-config
+      - name: mongo-config  # Volume yang menggunakan ConfigMap "mongo-config" dengan key "mongo.conf"
         configMap:
           name: mongo-config
           items:
           - key: mongo.conf
             path: mongo.conf
-      - name: mongo-credentials
+      - name: mongo-credentials  # Volume yang menggunakan Secret "mongo-credentials" dengan key "MONGO_ROOT_USERNAME" dan "MONGO_ROOT_PASSWORD" dalam mode baca saja
         secret:
           secretName: mongo-credentials
           items:

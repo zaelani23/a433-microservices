@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: karsajobs-frontend
+  name: karsajobs-frontend  # Nama Deployment yang akan digunakan
 spec:
-  replicas: 1
+  replicas: 1  # Jumlah replika yang akan dibuat untuk Deployment ini
   selector:
     matchLabels:
-      app: frontend
+      app: frontend  # Selector untuk memilih Pod yang memiliki label "app: frontend"
   template:
     metadata:
       labels:
-        app: frontend
+        app: frontend  # Label yang akan diberikan pada Pod yang dibuat
     spec:
       containers:
-      - name: karsajobs-ui
-        image: ghcr.io/zaelani23/karsajobs-ui:latest
-        imagePullPolicy: Always
+      - name: karsajobs-ui  # Nama container
+        image: ghcr.io/zaelani23/karsajobs-ui:latest  # Image Docker yang akan digunakan untuk container ini
+        imagePullPolicy: Always  # Kebijakan untuk menarik image, selalu menarik image terbaru
         ports:
-        - containerPort: 8000
+        - containerPort: 8000  # Port yang akan diexpose oleh container

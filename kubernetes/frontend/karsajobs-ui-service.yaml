@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: karsajobs-ui-service
+  name: karsajobs-ui-service  # Nama Service yang akan digunakan
   labels:
-    app: frontend
+    app: frontend  # Label yang akan diberikan pada Service
 spec:
-  type: NodePort
+  type: NodePort  # Jenis Service yang akan digunakan (NodePort)
   ports:
-  - port: 8000
+  - port: 8000  # Port yang akan diexpose oleh Service
   selector:
-    app: frontend
+    app: frontend  # Selector untuk memilih Pod yang memiliki label "app: frontend"
