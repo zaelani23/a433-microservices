@@ -1,0 +1,3 @@
+https://github.com/zaelani23/a433-microservices/pkgs/container/karsajobs-ui
+
+https://github.com/zaelani23/a433-microservices/pkgs/container/karsajobs
