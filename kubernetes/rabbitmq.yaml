@@ -1,10 +1,9 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: rabbitmq
 spec:
-  replicas: 3
-  serviceName: rabbitmq
+  replicas: 1
   selector:
     matchLabels:
       app: rabbitmq
@@ -30,3 +29,18 @@ spec:
       resources:
         requests:
           storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - protocol: TCP
+      port: 5672
+      targetPort: 5672
+    - protocol: TCP
+      port: 15672
+      targetPort: 15672
