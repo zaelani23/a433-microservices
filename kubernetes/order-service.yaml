@@ -13,7 +13,7 @@ spec:
         app: order-service  # Label yang akan diberikan pada Pod yang dibuat
     spec:
       containers:
-      - name: karsajobs  # Nama container
+      - name: order-service  # Nama container
         image: ghcr.io/zaelani23/order-service:latest  # Image Docker yang akan digunakan untuk container ini
         imagePullPolicy: Always  # Kebijakan untuk menarik image, selalu menarik image terbaru
         ports:
