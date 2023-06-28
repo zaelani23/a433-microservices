@@ -3,49 +3,49 @@ kind: StatefulSet
 metadata:
   name: rabbitmq
 spec:
-  serviceName: rabbitmq-service
-  replicas: 1
+  serviceName: rabbitmq-service  # Nama layanan yang digunakan oleh StatefulSet
+  replicas: 1  # Jumlah replika pod RabbitMQ yang ingin dijalankan
   selector:
     matchLabels:
-      app: rabbitmq
+      app: rabbitmq  # Seleksi pod berdasarkan label 'app: rabbitmq'
   template:
     metadata:
       labels:
-        app: rabbitmq
+        app: rabbitmq  # Label yang diterapkan pada pod RabbitMQ
     spec:
       containers:
       - name: rabbitmq
-        image: rabbitmq:3.11-management
+        image: rabbitmq:3.11-management  # Image Docker RabbitMQ yang digunakan
         ports:
         - name: amqp
-          containerPort: 5672
+          containerPort: 5672  # Port kontainer yang akan diteruskan ke pod RabbitMQ
         - name: management
-          containerPort: 15672
+          containerPort: 15672  # Port kontainer untuk antarmuka manajemen RabbitMQ
         volumeMounts:
         - name: data
-          mountPath: /var/lib/rabbitmq
+          mountPath: /var/lib/rabbitmq  # Path di dalam pod tempat data RabbitMQ akan disimpan
   volumeClaimTemplates:
   - metadata:
       name: data
     spec:
-      accessModes: [ "ReadWriteOnce" ]
+      accessModes: [ "ReadWriteOnce" ]  # Mode akses untuk klaim volume
       resources:
         requests:
-          storage: 10Gi
+          storage: 10Gi  # Ukuran penyimpanan yang dialokasikan untuk setiap pod RabbitMQ
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: rabbitmq-service
+  name: rabbitmq-service  # Nama layanan RabbitMQ
 spec:
   selector:
-    app: rabbitmq
+    app: rabbitmq  # Seleksi pod berdasarkan label 'app: rabbitmq'
   ports:
     - name: amqp
       protocol: TCP
-      port: 5672
-      targetPort: 5672
+      port: 5672  # Port layanan RabbitMQ
+      targetPort: 5672  # Port target di dalam pod yang akan diteruskan
     - name: management
       protocol: TCP
-      port: 15672
-      targetPort: 15672
+      port: 15672  # Port antarmuka manajemen RabbitMQ
+      targetPort: 15672  # Port target di dalam pod yang akan diteruskan
