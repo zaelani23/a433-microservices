@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service  # Nama Deployment yang akan digunakan
+spec:
+  replicas: 1  # Jumlah replika yang akan dibuat untuk Deployment ini
+  selector:
+    matchLabels:
+      app: order-service  # Selector untuk memilih Pod yang memiliki label "app: order-service"
+  template:
+    metadata:
+      labels:
+        app: order-service  # Label yang akan diberikan pada Pod yang dibuat
+    spec:
+      containers:
+      - name: karsajobs  # Nama container
+        image: ghcr.io/zaelani23/order-service:latest  # Image Docker yang akan digunakan untuk container ini
+        imagePullPolicy: Always  # Kebijakan untuk menarik image, selalu menarik image terbaru
+        ports:
+        - containerPort: 3000  # Port yang akan diexpose oleh container
+        env:
+          - name: PORT  # Variable environment untuk menentukan port aplikasi
+            value: "3000"  # Nilai dari variable environment PORT
+          - name: AMQP_URL
+            value: "amqp://localhost:5672"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service  # Nama Service yang akan digunakan
+  labels:
+    app: order-service  # Label yang akan diberikan pada Service
+spec:
+  type: NodePort  # Jenis Service yang akan digunakan (NodePort)
+  ports:
+  - port: 3000  # Port yang akan diexpose oleh Service
+  selector:
+    app: order-service  # Selector untuk memilih Pod yang memiliki label "app: order-service"
